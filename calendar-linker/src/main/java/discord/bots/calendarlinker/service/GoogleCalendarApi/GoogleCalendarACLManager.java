@@ -1,4 +1,4 @@
-package discord.bots.calendarlinker.service;
+package discord.bots.calendarlinker.service.GoogleCalendarApi;
 
 import java.io.IOException;
 import java.io.InputStream;

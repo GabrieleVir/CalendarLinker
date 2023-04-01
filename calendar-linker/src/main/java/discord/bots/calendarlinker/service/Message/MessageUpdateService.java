@@ -1,4 +1,4 @@
-package discord.bots.calendarlinker.service;
+package discord.bots.calendarlinker.service.Message;
 
 import discord.bots.calendarlinker.listeners.EventListener;
 import discord.bots.calendarlinker.listeners.MessageListener;
