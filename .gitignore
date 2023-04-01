@@ -1,0 +1,41 @@
+HELP.md
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!discord-bot/src/main/**/target/
+!discord-bot/src/test/**/target/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+.env.properties
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!discord-bot/src/main/**/build/
+!discord-bot/src/test/**/build/
+
+### VS Code ###
+.vscode/
+/calendar-linker/src/main/resources/credentials.json
+/calendar-linker/src/main/resources/.google-api-env.properties
+/calendar-linker/src/main/resources/discordbotcalendar.json
+/tokens/
+/.mvn/
+/mvnw.cmd
+/mvnw
