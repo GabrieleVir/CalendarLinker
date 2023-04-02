@@ -1,12 +1,12 @@
 package discord.bots.calendarlinker.listeners;
 
+import discord.bots.calendarlinker.config.DiscordServerConfigurationProperties;
 import discord.bots.calendarlinker.service.CalendarLinkerCommands.FunCommandsService;
 import discord.bots.calendarlinker.service.CalendarLinkerCommands.GoogleCalendarCommandsService;
 import discord.bots.calendarlinker.service.DiscordNotificationService;
-import discord.bots.calendarlinker.service.GoogleCalendarApi.GoogleCalendarACLManager;
+import discord4j.common.util.Snowflake;
 import discord4j.core.object.entity.Message;
 import discord4j.core.object.entity.User;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import reactor.core.publisher.Mono;
 import java.util.regex.Pattern;
@@ -23,6 +23,17 @@ public abstract class MessageListener {
     @Autowired
     private FunCommandsService funCommandsService;
 
+    @Autowired
+    private DiscordServerConfigurationProperties discordServerConfiguration;
+
+    public boolean isATestOrAccessDemandChannel(Message eventMessage) {
+        Snowflake channelId = eventMessage.getChannelId();
+        String guildId =  eventMessage.getGuildId().toString();
+        return channelId.asString().equals(discordServerConfiguration.getTestChannelId(guildId)) ||
+                channelId.asString().equals(discordServerConfiguration.getAccessDemandId(guildId));
+
+    }
+
 
     public Mono<Void> processCommand(Message eventMessage) {
         User author = eventMessage.getAuthor().get();
@@ -32,15 +43,15 @@ public abstract class MessageListener {
         if (!author.isBot()) {
             switch (commandAndArgs[0].toUpperCase()) {
                 case "!INSULTEJB":
-                    eventMessage.getChannel();
                     return this.funCommandsService.insultJbCommand(eventMessage);
                 case "!CALENDRIER":
                     return this.googleCalendarCommandsService.getCalendarUrl(eventMessage);
                 case "!ROLEACCESS":
-                    String regexPattern = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
+                    String emailRegexPattern = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
                     if (
                             commandAndArgs.length == 2 &&
-                            Pattern.matches(regexPattern, commandAndArgs[1])
+                            Pattern.matches(emailRegexPattern, commandAndArgs[1]) &&
+                            isATestOrAccessDemandChannel(eventMessage)
                     ) {
                         return this.googleCalendarCommandsService.roleAccessCommand(eventMessage, commandAndArgs[1]);
                     } else {
