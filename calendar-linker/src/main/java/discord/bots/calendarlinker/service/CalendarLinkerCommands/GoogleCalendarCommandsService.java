@@ -1,10 +1,7 @@
 package discord.bots.calendarlinker.service.CalendarLinkerCommands;
 
-import discord.bots.calendarlinker.config.DiscordServerConfigurationProperties;
-import discord.bots.calendarlinker.service.DiscordNotificationService;
 import discord4j.common.util.Snowflake;
 import discord4j.core.object.entity.Message;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 

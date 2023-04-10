@@ -1,16 +1,11 @@
 package discord.bots.calendarlinker.listeners;
 
-import discord.bots.calendarlinker.config.DiscordServerConfigurationProperties;
 import discord.bots.calendarlinker.service.CalendarLinkerCommands.FunCommandsService;
 import discord.bots.calendarlinker.service.CalendarLinkerCommands.GoogleCalendarCommandsService;
-import discord.bots.calendarlinker.service.DiscordNotificationService;
-import discord4j.common.util.Snowflake;
 import discord4j.core.object.entity.Message;
 import discord4j.core.object.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import reactor.core.publisher.Mono;
-import java.util.regex.Pattern;
-
 
 public abstract class MessageListener {
 
@@ -19,10 +14,6 @@ public abstract class MessageListener {
 
     @Autowired
     private FunCommandsService funCommandsService;
-
-
-
-
 
     public Mono<Void> processCommand(Message eventMessage) {
         User author = eventMessage.getAuthor().get();
