@@ -15,24 +15,13 @@ import java.util.regex.Pattern;
 public abstract class MessageListener {
 
     @Autowired
-    private DiscordNotificationService discordNotificationService;
-
-    @Autowired
     private GoogleCalendarCommandsService googleCalendarCommandsService;
 
     @Autowired
     private FunCommandsService funCommandsService;
 
-    @Autowired
-    private DiscordServerConfigurationProperties discordServerConfiguration;
 
-    public boolean isATestOrAccessDemandChannel(Message eventMessage) {
-        Snowflake channelId = eventMessage.getChannelId();
-        String guildId =  eventMessage.getGuildId().toString();
-        return channelId.asString().equals(discordServerConfiguration.getTestChannelId(guildId)) ||
-                channelId.asString().equals(discordServerConfiguration.getAccessDemandId(guildId));
 
-    }
 
 
     public Mono<Void> processCommand(Message eventMessage) {
@@ -47,20 +36,7 @@ public abstract class MessageListener {
                 case "!CALENDRIER":
                     return this.googleCalendarCommandsService.getCalendarUrl(eventMessage);
                 case "!ROLEACCESS":
-                    String emailRegexPattern = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
-                    if (
-                            commandAndArgs.length == 2 &&
-                            Pattern.matches(emailRegexPattern, commandAndArgs[1]) &&
-                            isATestOrAccessDemandChannel(eventMessage)
-                    ) {
-                        return this.googleCalendarCommandsService.roleAccessCommand(eventMessage, commandAndArgs[1]);
-                    } else {
-                        return this.discordNotificationService.error(
-                            eventMessage,
-                            "Please insert a valid email after the command !roleAccess. " +
-                            "For example: !roleAccess test@hotmail.com"
-                        );
-                    }
+                    return this.googleCalendarCommandsService.roleAccessCommand(eventMessage, commandAndArgs);
                 default:
                     break;
             }

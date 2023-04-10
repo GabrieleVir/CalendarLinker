@@ -12,7 +12,7 @@ public class DiscordNotificationService {
                                 messageFromDiscordUser.getAuthor().map(user -> !user.isBot()).orElse(false)
                 )
                 .flatMap(Message::getChannel)
-                .flatMap(channel -> channel.createMessage("ERROR" + message))
+                .flatMap(channel -> channel.createMessage("ERROR: " + message))
                 .then();
     }
 
